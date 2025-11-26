@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Grow a pet</title>
+</head>
+<body>
+    <div class="game-container">
+    <div class="btns-area"></div>
+    <div class="stats"></div>
+    <div class="bars">
+        <div class="health">
+        <label for="health-bar">Health</label>
+        <progress id="health-bar" class="health-bar bar"value= '10' max="10"></progress>
+        </div>
+        <div class="hunger">
+        <label for="hunger-bar">Hunger</label>
+        <progress id="hunger-bar" class="bar hunger-bar" value= '10' max="10"></progress>
+        </div>
+        <div class="exp">
+        <label for="exp-bar">EXP</label>
+        <progress id="exp-bar" class="bar exp-bar" value="0" max="20"></progress>
+        </div>
+    </div>
+    <div class="popup hidden" id="popup">
+        <form action=""class="input " id="name-input">
+   
+        <div>
+        <label for="name">Name your pet</label>
+        <input type="text" name="name" id="name" >
+        </div>  
+        <input type="submit" value="Submit">
+    
+    </form>
+    </div>
+    <div class="pet">
+        
+        
+        <button id="petname"><img src="resouces/egg.png" class="egg" id="egg" alt=""></button>
+        <h3 class="egg start" id="start">Click the egg</h3>
+        <img src="resouces/FA_PENGUIN_Idle_000.png" class="penguin" alt="">
+        <button id="dead"><img src="resouces/FA_PENGUIN_Dead_009.png" class="dead" alt=""></button>
+    </div>
+    </div>
+
+    <script src="main.js"></script>
+</body>
+</html>
