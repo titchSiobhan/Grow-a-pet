@@ -4,20 +4,22 @@
     box-sizing: border-box;
 }
 .btn {
-    font: 16px 500 Arial, sans-serif;
     color: #ffffff;
     background: linear-gradient(160deg, #a947a1 0%, #783ffd 79%);
     border-radius: 22px;
-    outline: none;
-    padding: 13px 32px;
+    border: 5px groove #d405c2;
+    padding: 13px 20px;
     cursor: pointer;
     margin: 20px;
+    height: 60px;
 }
 
-.btns-area {
+#food-btns, #drink-btns {
     display: flex;
     flex-direction: row;
     grid-row: 5;
+    align-content: center;
+    align-items: center;
 }
 
 .penguin {
@@ -106,6 +108,9 @@ body {
     z-index: 1;
     display: flex;
     justify-self: center;
+}
+#food-area, #drink-area{
+    grid-row: 4;
 }
 
 form{
@@ -257,4 +262,52 @@ h3 {
         margin: 20px;
         align-content: flex-start;
     }
+
+
+.drink-area, .food-area {
+    display: flex;
+    flex-direction: column-reverse;
+    margin-bottom: 20px;
+    justify-content: flex-start;
+    align-items: flex-start;
+    
+}
+
+.food, .drink {
+    z-index: 1;
+}
+
+#food-btns {
+    grid-column: 3;
+}
+
+#drink-btns {
+    grid-column: 6;
+}
+
+#food-area, #drink-area{
+  
+    grid-column:    1/9;
+    grid-row: 3;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+#food-area .btn, #drink-area .btn {
+    width: 70px;
+    height: 60px;
+    font-size: 1rem;
+    padding: 0;
+    margin: 5px;
+    justify-content: center;
+}
+
+.food, .drink {
+    flex-wrap: wrap;
+}
+
+#popup {
+    grid-row: 2;
+}
 }

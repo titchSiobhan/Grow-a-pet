@@ -7,8 +7,25 @@
     <title>Grow a pet</title>
 </head>
 <body>
-    <div class="game-container">
-    <div class="btns-area"></div>
+   <div class="game-container">
+    
+        
+            <div class="drinks btns-area drinks-btns" id="drink-btns">
+                <button class="btn">Drinks</button>
+            </div>
+            <div class="drink-area " id="drink-area">
+                <div class="drink"></div>
+            </div>
+    
+    
+            <div class="foods btns-area food-btns" id="food-btns">
+                <button class="btn">Food</button> 
+            </div>
+            <div class="food-area " id="food-area">
+                <div class="food" ></div>
+            </div>
+    
+
     <div class="stats"></div>
     <div class="bars">
         <div class="health">
@@ -44,7 +61,9 @@
         <button id="dead"><img src="resouces/FA_PENGUIN_Dead_009.png" class="dead" alt=""></button>
     </div>
     </div>
+</div>
 
-    <script src="main.js"></script>
+    <script type="module" src="food.js"></script>
+    <script type="module" src="main.js"></script>
 </body>
 </html>

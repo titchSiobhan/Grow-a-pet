@@ -1,6 +1,7 @@
+import {foods, foodItems, drinks, drinkItems} from './food.js'
+
 let currentPet = null;
 
-// const petNameButton =document.querySelector('#petname');
 const egg = document.querySelector('.egg');
 const penguin = document.querySelector('.penguin')
 const startEgg = document.querySelector('#start')
@@ -34,18 +35,14 @@ egg.addEventListener('click', () => {
         updateBars(currentPet);
         currentPet.startHungerDecay()
         popup.style.display = 'none'
-        
+        localStorage.setItem('pet', JSON.stringify(currentPet));
+
         }
+        
     });
 
 reset.addEventListener('click', () => {
-   this.health = 10;
-   this.hunger = 10;
-   this.maxHealth = 10;
-   this.maxHunger = 10;
-   this.name = null;
-   this.exp = 0;
-   this.level = 0;
+   localStorage.removeItem('pet');
     location.reload()
 })
 
@@ -138,7 +135,24 @@ gainExp(amount = 1) {
     this.decreaseHealth(food.healthPoints);
   }
             }
-            updateBars(this)
+            updateBars(this);
+             localStorage.setItem('pet', JSON.stringify(currentPet));
+        },
+        water(drink) {
+            if (this.hunger >= this.maxHunger) {
+                console.log(`${this.name} isn't hungry!`);
+            } else {
+                this.hunger = Math.min(this.hunger + drink.giveHunger, this.maxHunger);
+                this.gainExp(drink.giveExp);
+
+                 if (drink.giveHealth) {
+    this.increaseHealth(drink.healthPoints);
+  } else {
+    this.decreaseHealth(drink.healthPoints);
+  }
+            }
+            updateBars(this);
+             localStorage.setItem('pet', JSON.stringify(currentPet));
         },
 
         
@@ -151,57 +165,62 @@ gainExp(amount = 1) {
 stopHungerDecay() {
     clearInterval(this.hungerTimer);
     this.hungerTimer = null;
-}
-
-   
+}  
 };
-
-
 }
 
 
+const drinkAreaBtns = document.querySelector('.drink-btns');
+const foodAreaBtns = document.querySelector('.food-btns')
+const drinkArea = document.querySelector('.drink')
+const foodArea = document.querySelector('.food')
+const foodBtn = document.querySelector('.foods');
+const drinkBtn = document.querySelector('.drinks');
 
 
-
-function foods(food, giveHunger, giveExp, healthPoints, giveHealth) {
- 
-    return{food, giveHunger, giveExp, healthPoints, giveHealth }
-}
-
-
-
-const foodItems = []
-
-const milk = foods('Milk', 5, 5, 5, true)
-const cake = foods('Cake', 20, 20, 2, false)
-
-const foodNames = foodItems.map( food => food.food)
-console.log(foodNames)
-
-
-
-const btnsArea = document.querySelector('.btns-area')
-milkButton = document.createElement('button');
-milkButton.setAttribute('class', 'btn')
-milkButton.textContent = 'Milk'
-btnsArea.appendChild(milkButton)
-
-cakeButton = document.createElement('button');
-cakeButton.setAttribute('class', 'btn')
-cakeButton.textContent = 'Cake'
-btnsArea.appendChild(cakeButton)
-
-milkButton.addEventListener('click', () => {
-    currentPet.feed(milk);
+drinkArea.style.display = 'none'
+foodArea.style.display = 'none'
+foodBtn.addEventListener('click', () => {
+    foodArea.style.display = 'flex';
 })
-cakeButton.addEventListener('click', () => {
-    currentPet.feed(cake);
+
+drinkBtn.addEventListener('click', () => {
+    drinkArea.style.display = 'flex';
+    
 })
+
+foodItems.forEach((foodItem) => {
+const button = document.createElement('button');
+button.setAttribute('class', 'btn');
+button.textContent = foodItem.food;
+foodArea.appendChild(button)
+
+button.addEventListener('click', () => {
+    currentPet.feed(foodItem);
+    foodArea.style.display = 'none';
+});
+});
+
+
+drinkItems.forEach((drinkItem) => {
+const button = document.createElement('button');
+button.setAttribute('class', 'btn');
+button.textContent = drinkItem.drink;
+drinkArea.appendChild(button)
+
+
+
+button.addEventListener('click', () => {
+    currentPet.feed(drinkItem);
+    drinkArea.style.display = 'none'; 
+});
+});
+
 const hungerBar = document.querySelector('#hunger-bar')
 const expBar = document.querySelector('#exp-bar')
 const healthBar = document.querySelector('#health-bar')
 
-updateBars = (pet) => {
+const updateBars = (pet) => {
     hungerBar.value = pet.hunger
     hungerBar.max = pet.maxHunger
     expBar.value = pet.exp
@@ -223,10 +242,10 @@ const displayLevel = document.createElement('h1');
 stats.appendChild(displayName);
 stats.appendChild(displayLevel);
 
-updateLevel = (pet) => {
-    displayLevel.textContent = currentPet.level;
+const updateLevel = (pet) => {
+    displayLevel.textContent = 'Level: ' + currentPet.level;
      displayName.textContent = currentPet.name;
 }
 
-//health choices
 
+const savedPet = JSON.parse(localStorage.getItem('pet'));
