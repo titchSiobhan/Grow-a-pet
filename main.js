@@ -10,6 +10,16 @@ const reset = document.querySelector('#dead')
 const nameInput = document.querySelector('#name')
 const nameForm = document.querySelector('#name-input')
 const popup = document.querySelector('#popup');
+const stats = document.querySelector('.stats')
+
+const displayName = document.createElement('h1');
+const displayLevel = document.createElement('h1');
+const message = document.querySelector('.message');
+
+
+
+stats.appendChild(displayName);
+        stats.appendChild(displayLevel);
 
 nameForm.style.display = 'block';
 
@@ -35,9 +45,11 @@ egg.addEventListener('click', () => {
         updateBars(currentPet);
         currentPet.startHungerDecay()
         popup.style.display = 'none'
-        localStorage.setItem('pet', JSON.stringify(currentPet));
+        
+
 
         }
+        localStorage.setItem('pet', JSON.stringify(currentPet));
         
     });
 
@@ -84,6 +96,9 @@ return{
                 this.health += 5;
             }
             updateLevel(this)
+             refreshFoodMenu();
+            refreshDrinkMenu();
+
         },
         increaseHealth(healthPoints) { if (this.health < this.maxHealth) this.health += healthPoints; 
             updateBars(this)
@@ -103,8 +118,8 @@ return{
         increaseHunger() { if (this.hunger < this.maxHunger) this.hunger++; },
         decreaseHunger() {  if (this.hunger > 0) {
         this.hunger--;
-        //console.log(`${this.name}'s hunger is now ${this.hunger}`)
-    } else if (this.hunger === 0 ) {
+        
+        } else if (this.hunger === 0 ) {
         nameForm.style.display = 'none'
         dead.style.display = 'block';
         penguin.style.display = 'none';
@@ -124,7 +139,11 @@ gainExp(amount = 1) {
 
          feed(food) {
             if (this.hunger >= this.maxHunger) {
-                console.log(`${this.name} isn't hungry!`);
+                const messageBox = document.createElement('div');  
+                messageBox.setAttribute('class', 'messageBox')
+                 messageBox.textContent = `${this.name} isn't hungry!`;
+                 message.appendChild(messageBox)
+                 setTimeout(() => messageBox.remove(), 1000) //1 second
             } else {
                 this.hunger = Math.min(this.hunger + food.giveHunger, this.maxHunger);
                 this.gainExp(food.giveExp);
@@ -139,8 +158,13 @@ gainExp(amount = 1) {
              localStorage.setItem('pet', JSON.stringify(currentPet));
         },
         water(drink) {
+            
             if (this.hunger >= this.maxHunger) {
-                console.log(`${this.name} isn't hungry!`);
+                  const messageBox = document.createElement('div');  
+                messageBox.setAttribute('class', 'messageBox')
+                 messageBox.textContent = `${this.name} isn't hungry!`;
+                 message.appendChild(messageBox)
+                 setTimeout(() => messageBox.remove(), 1000) //1 second
             } else {
                 this.hunger = Math.min(this.hunger + drink.giveHunger, this.maxHunger);
                 this.gainExp(drink.giveExp);
@@ -167,11 +191,11 @@ stopHungerDecay() {
     this.hungerTimer = null;
 }  
 };
+localStorage.setItem('pet', JSON.stringify(currentPet));
 }
 
 
-const drinkAreaBtns = document.querySelector('.drink-btns');
-const foodAreaBtns = document.querySelector('.food-btns')
+
 const drinkArea = document.querySelector('.drink')
 const foodArea = document.querySelector('.food')
 const foodBtn = document.querySelector('.foods');
@@ -188,25 +212,43 @@ drinkBtn.addEventListener('click', () => {
     drinkArea.style.display = 'flex';
     
 })
-
+function refreshFoodMenu() {
+    foodArea.textContent = '';
 foodItems.forEach((foodItem) => {
 const button = document.createElement('button');
 button.setAttribute('class', 'btn');
 button.textContent = foodItem.food;
-foodArea.appendChild(button)
+foodArea.appendChild(button);
+if ((currentPet === null && foodItem.levelNeeded === 0) ||
+    (currentPet && currentPet.level >= foodItem.levelNeeded)) {
+    button.style.display = 'flex'; 
+} else {
+    button.style.display = 'none';   // locked
+  } 
+
 
 button.addEventListener('click', () => {
     currentPet.feed(foodItem);
     foodArea.style.display = 'none';
 });
 });
+}
 
-
+function refreshDrinkMenu() {
+    drinkArea.textContent = '';
 drinkItems.forEach((drinkItem) => {
 const button = document.createElement('button');
 button.setAttribute('class', 'btn');
 button.textContent = drinkItem.drink;
-drinkArea.appendChild(button)
+drinkArea.appendChild(button);
+  
+if ((currentPet === null && drinkItem.levelNeeded === 0) ||
+    (currentPet && currentPet.level >= drinkItem.levelNeeded))
+        {
+    button.style.display = 'flex'; 
+  } else {
+    button.style.display = 'none';   // locked
+  }
 
 
 
@@ -215,6 +257,7 @@ button.addEventListener('click', () => {
     drinkArea.style.display = 'none'; 
 });
 });
+}
 
 const hungerBar = document.querySelector('#hunger-bar')
 const expBar = document.querySelector('#exp-bar')
@@ -234,18 +277,31 @@ const updateBars = (pet) => {
 
 
 
-const stats = document.querySelector('.stats')
 
-const displayName = document.createElement('h1');
-const displayLevel = document.createElement('h1');
-
-stats.appendChild(displayName);
-stats.appendChild(displayLevel);
 
 const updateLevel = (pet) => {
     displayLevel.textContent = 'Level: ' + currentPet.level;
      displayName.textContent = currentPet.name;
 }
 
-
+function savedPetState() {
+     localStorage.setItem('pet', JSON.stringify(currentPet));
+}
 const savedPet = JSON.parse(localStorage.getItem('pet'));
+
+if (savedPet) {
+  currentPet = pet(savedPet.name); // recreate pet object
+  Object.assign(currentPet, savedPet); // copy saved values into new pet
+  updateBars(currentPet);
+  displayName.textContent = currentPet.name;
+  displayLevel.textContent = 'Level: ' + currentPet.level;
+  penguin.style.display = 'block';
+  egg.style.display = 'none';
+  startEgg.style.display = 'none';
+  currentPet.startHungerDecay();
+}
+
+
+// Run once at startup
+refreshFoodMenu();
+refreshDrinkMenu();

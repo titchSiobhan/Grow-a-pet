@@ -73,6 +73,7 @@ button {
 	font: inherit;
 	cursor: pointer;
 	outline: inherit;
+    z-index: 1;
 }
 	
 label {
@@ -144,6 +145,22 @@ padding: 5px;
     cursor: pointer;
     transform: scale(1.1);
 }
+
+.message {
+   
+    
+    grid-column: 4/10;
+    grid-row: 2;
+}
+
+.messageBox {
+    color: #ffffff;
+   font-size: 1.3rem;
+   font-weight: 900;
+   justify-content: center;
+   text-align: center;
+}
+
 
 
 .stats {
@@ -309,5 +326,21 @@ h3 {
 
 #popup {
     grid-row: 2;
+}
+
+.message {
+    grid-row: 3;
+    grid-column: 2/8;
+   
+}
+
+.messageBox{
+    color:#2b2157;
+    font-weight: 900;
+    font-size: 1.3rem;
+    padding: 5px;
+    text-align: center;
+    justify-content: baseline;
+    margin-top: 30px;
 }
 }
