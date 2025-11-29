@@ -292,6 +292,7 @@ h3 {
 
 .food, .drink {
     z-index: 1;
+    flex-direction: row-reverse;
 }
 
 #food-btns {

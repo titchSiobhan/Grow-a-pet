@@ -31,12 +31,16 @@ const foodItems = [
     new foods('Cheese', 10, 12, 9, true,2),
     new foods('Steak', 12, 6, 3, false, 2),
     new foods('Chocolate', 2, 10, 7, false, 4),
+    new foods('Fish', 9, 13, true, 7),
+
 ];
 
 const drinkItems = [
     new drinks('Milk', 5, 5, 5, true, 0),
     new drinks('Water', 2, 2, 8, true, 0),
-    new drinks('Coffee', 1, 6, 3, true, 3)
+    new drinks('Coffee', 1, 6, 3, true, 3),
+    new drinks('Milkshake', 10, 9, 5, false, 5),
+    new drinks('Cola', 5, 12, 8, false, 7)
 ]
 
 
